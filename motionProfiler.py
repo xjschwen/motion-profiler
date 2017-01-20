@@ -19,9 +19,23 @@ class MotionProfiler():
 
     self.accelTime=self.getProfileAccellTimes()
     self.cruiseDistance= self.distance - (2 * self.getProfileDeltaX())
-    self.cruiseTime = self.cruiseDistance / self.cruiseVelocity
-    self.deccelTime = self.accelTime + self.cruiseTime
-    self.stopTime  = self.deccelTime + self.accelTime
+
+    # We do not have a long enough move to get all the way up to cruiseVelocity
+    #therefore we have a triangle rather than a trapazoid
+    if (self.cruiseDistance < 0):
+        #we have a triangle... Cruise time = 0 and cruiseDistance will be zero
+        self.cruiseTime = 0
+        self.cruiseDistance = 0
+        self.cruiseVelocity = math.sqrt(self.distance * self.accelleration)
+        self.accelTime = math.sqrt((self.distance )/self.accelleration)
+        self.deccelTime = self.accelTime + self.cruiseTime
+        self.stopTime  = self.deccelTime + self.accelTime
+    else:
+        #we have a trapazoid
+        self.cruiseTime = self.cruiseDistance / self.cruiseVelocity
+        self.deccelTime = self.accelTime + self.cruiseTime
+        self.stopTime  = self.deccelTime + self.accelTime
+
     self.logger=logger.Logger("motionProfiler.txt")
 
     self.xa = 0
@@ -55,14 +69,16 @@ class MotionProfiler():
     #we have not started moving yet...
     if time < 0:
         currVel = 0
-    #we are accellerating
+    #we are accelerating
     elif (time < self.accelTime):
-        msg = "accellerating"
+        msg = "accelerating"
         currVel =self.initVelocity + (self.accelleration * time)
         self.xa = .5 * (self.accelleration) * time * time
     #we are cruising at speed
     elif (time > self.accelTime) and (time < self.deccelTime):
         msg = "cruising"
+        #in triangle shaped profiles this causes issues in that we might not be
+        #to self.cruiseVelocity yet
         currVel = self.cruiseVelocity
         self.xc = (self.cruiseVelocity) * (time -self.accelTime)
     #we are slowing down
