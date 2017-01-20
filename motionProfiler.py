@@ -27,7 +27,7 @@ class MotionProfiler():
         self.cruiseTime = 0
         self.cruiseDistance = 0
         self.cruiseVelocity = math.sqrt(self.distance * self.accelleration)
-        self.accelTime = math.sqrt((self.distance )/self.accelleration)
+        self.accelTime = math.sqrt(self.distance/self.accelleration)
         self.deccelTime = self.accelTime + self.cruiseTime
         self.stopTime  = self.deccelTime + self.accelTime
     else:
@@ -77,8 +77,6 @@ class MotionProfiler():
     #we are cruising at speed
     elif (time > self.accelTime) and (time < self.deccelTime):
         msg = "cruising"
-        #in triangle shaped profiles this causes issues in that we might not be
-        #to self.cruiseVelocity yet
         currVel = self.cruiseVelocity
         self.xc = (self.cruiseVelocity) * (time -self.accelTime)
     #we are slowing down
