@@ -3,6 +3,7 @@
 import sys
 import time
 import datetime
+import os
 
 class Logger():
     """Logger to write data to the hard drive"""
@@ -10,6 +11,8 @@ class Logger():
     def __init__(self, fName="log.txt"):
         self.fName=fName
         self.entries=[]
+        if (os.path.exists(self.fName)):
+            os.remove(self.fName)
 
     def makeEntry (self, msg=[]):
         line = []
@@ -20,7 +23,7 @@ class Logger():
 
     def write(self):
 
-        f=open(self.fName,"wa")
+        f=open(self.fName,"w")
         for e in self.entries:
             line = ""
             for c in e:

@@ -15,7 +15,7 @@ if __name__ == "__main__":
     #    time.sleep (sleepTime)
     #cmdDrive = None
 
-    cmdDrive= cmdDriveWithProfile.cmdDriveWithProfile(240,120)
+    cmdDrive= cmdDriveWithProfile.cmdDriveWithProfile(0,120)
 
     sleepTime = 0.040
     while (cmdDrive.isFinished() == False):

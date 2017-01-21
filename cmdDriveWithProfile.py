@@ -24,7 +24,7 @@ class cmdDriveWithProfile():
         self.mp = MotionProfiler(distance, 0.0, cruiseSpeed, self.acceleration)
         self.logger=logger.Logger("cmdMotion.txt")
         self.startTime=time.time() * 1000
-        print "%s\t%s\t%s\t%s" % (self.mp.accelTime, self.mp.cruiseTime, self.mp.deccelTime, self.mp.stopTime)
+        print ("%s\t%s\t%s\t%s" % (self.mp.accelTime, self.mp.cruiseTime, self.mp.deccelTime, self.mp.stopTime))
 
 
     def __del__ (self):
@@ -77,6 +77,6 @@ class cmdDriveWithProfile():
     def end(self):
         """stop things that need to be stopped"""
         self.finished = True
-        print "%s.end" % __name__
-        print "%s\t%s\t%s" % (self.mp.accelTime, self.mp.cruiseTime, self.mp.deccelTime)
+        print ("%s.end" % __name__)
+        print ("%s\t%s\t%s" % (self.mp.accelTime, self.mp.cruiseTime, self.mp.deccelTime))
         self.logger.write()
